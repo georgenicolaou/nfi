@@ -22,8 +22,8 @@ become something more than a training assistant and thus we began developing
 what would later be called the Nyuki Forensics Investigator.
 
 ## Dependencies
-Before running Nyuki Forensics Investigator there are  several python modules 
-we need to make we sure we have in our system, namely:
+Before running Nyuki Forensics Investigator there are several python modules 
+we need to make sure we have in our system, namely:
 * cherrypy: [http://www.cherrypy.org/]
 * mako templates: [http://www.makotemplates.org/]
 * python-magic: [https://github.com/ahupp/python-magic]
