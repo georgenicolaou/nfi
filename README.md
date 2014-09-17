@@ -44,3 +44,6 @@ For additional help execute:
 ```
 ./nfi.py --help
 ```
+
+## More info
+View more info at Silensec's Website [here](http://silensec.com/downloads-menu/nfi)
