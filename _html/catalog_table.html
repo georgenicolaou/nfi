@@ -1,0 +1,78 @@
+<%page args="subsection=None"/>
+<%
+import ExtractStore
+TYPE_MULTY = 5
+TYPE_DATE = 8
+%>
+
+
+<%def name="get_item_html(item)">
+	% if item.item_type == TYPE_DATE:
+		<span class="date">${item.item_value | h}</span>
+	% else:
+		${item.item_value | h}
+	% endif
+</%def>
+
+<%def name="get_subsection_html(subsection)">
+	<div class="subsection">
+	% if subsection.subsection_items[0].item_type == TYPE_MULTY:
+		<table class="table table-condensed table-hover dtcapable">
+		<thead>
+		<tr>
+		% for col in subsection.subsection_items[0].item_contents:
+			<th>${col.item_label | h}</th>
+		% endfor
+		</tr>
+		</thead>
+		<tbody>
+		% for multi_item in subsection.subsection_items:
+			<tr>
+			% for col in multi_item.item_contents:
+				% if col.item_type != TYPE_MULTY:
+				<td>${get_item_html(col)}</td>
+				% endif
+			% endfor
+			</tr>
+		% endfor
+	% else:
+		<table class="table table-condensed table-hover">
+		<tbody>
+		% for item in subsection.subsection_items:
+			<tr><th>${item.item_label | h}</th><td>${get_item_html(item)}</td>
+		% endfor
+	% endif
+		</tbody>
+	</table>
+	</div>
+</%def>
+
+	<h3>${section.section_label|h}</h3>
+	<hr style="margin: 5px 0px;" />
+	<div class="panel with-nav-tabs panel-default">
+		<div class="panel-heading">
+			<ul class="nav nav-tabs" role="tablist">
+				% for subsection in section.subsections:
+					<li><a href="#${subsection.subsection_name}" role="tab" data-toggle="tab">${subsection.subsection_label|h}</a></li>
+				% endfor
+			</ul>		
+		</div>
+	
+	
+		<div class="panel-body">
+			<div class="tab-content">
+				% for subsection in section.subsections:
+				<div class="tab-pane fade" id="${subsection.subsection_name}">
+				${get_subsection_html(subsection)}
+				</div>
+				% endfor
+			</div>
+		</div>
+	</div>
+	
+
+	<script>
+		$(document).ready(function(){
+			$(".nav-tabs li:first a").click();
+		});
+	</script>

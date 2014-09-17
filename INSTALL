@@ -1,0 +1,9 @@
+Requirements:
+
+cherrypy: http://www.cherrypy.org/
+mako templates: http://www.makotemplates.org/ 
+python-magic: https://github.com/ahupp/python-magic
+biplist: https://github.com/wooster/biplist
+
+Once done check requirements using:
+./nfi.py -D

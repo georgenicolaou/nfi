@@ -1,0 +1,35 @@
+<%page args="settings=None,case=None"/>
+<!-- Modal -->
+<div class="modal fade" id="mSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    	<form id="changesettings" action="/case/changesettings/${case['case_id']}">
+	    	<div class="modal-header">
+	    		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	    		<h4 class="modal-title">Case Settings</h4>
+	    	</div>
+	    	<div class="modal-body">
+	    	% if settings == None or case == None:
+	    		<h3>Settings Class could not be loaded</h3>
+	    	% else:
+	    		<div class="form-group">
+				  <label class="col-md-4 control-label" for="timezone">Dates Timezone</label>  
+				  <div class="col-md-8">
+				  <select id="timezone" name="timezone" class="form-control" type="select">
+				  	<option value="local">Local</option>
+				  </select>
+				  </div>
+				</div>
+	    	% endif
+	    	</div>
+	    	<div class="modal-footer">
+		        <button type="submit" class="btn btn-success" data-action="selfreload">Save</button>
+		        % if settings != None or case == None:
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        % endif
+	      	</div>
+      	</form>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,38 @@
+<%page args="case_id,app,filehtml,module"/>
+
+<h3>${app.name} (${app.cname})</h3>
+<hr />
+${filehtml}
+
+<script>
+$(document).ready(function(){
+	$("table").addClass("table table-condensed");
+	var locsplit = location.hash.substr(1).split("/");
+	if( locsplit[2] == "view" && $(".nav.nav-tabs").length ) {
+		$("a[data-toggle='tab']").on('shown.bs.tab',function(e){
+    		$( $.fn.dataTable.tables( true ) ).DataTable().columns.adjust();
+    	});
+		var datasource = location.hash.substr(1).split("/").splice(3).join("/");
+		$("a[data-toggle='tab']:first").tab("show")
+		$(".tab-pane table.todt").each(function(i,item){
+			$this = $(this);
+			cols = [];
+			$this.find("th").each(function(i,item){
+				cols.push({'data':item.innerHTML});
+			});
+			$this.dataTable({
+				"processing": true,
+				"serverSide": true,
+				"scrollX": true,
+				"ajax": {
+					"url": "/${module.internal_name|h}/getdata/"+datasource+"/"+
+							$this.parent().attr("id"),
+					"type": "POST",
+				},
+				"columns": cols,
+				"fnDrawCallback": function( oSett ) { datefieldsupdate(); }
+			});
+		});
+	}
+});
+</script>

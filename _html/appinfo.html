@@ -1,0 +1,59 @@
+<%page args="applications=None, app=None"/>
+<%include file="head.html"/>
+<body>
+	<%include file="nav.html"/>
+	<div class="row affix-row">
+		% if applications != None:
+			<%include file="sidenav.html" args="applications=applications, app=app,selected='appinfo'"/>
+			<div class="col-sm-9 col-md-10 affix-content">
+		% else:
+			<div class="col-lg-12 affix-content">
+		% endif
+		<h3>Application Info (${app.name|h})</h3>
+		<hr />
+		<table class="table table-condensed table-hover">
+		<tbody>
+		<tr><th>Package Name</th><td>${app.name|h}</td></tr>
+		<tr><th>Known Name</th><td>${app.cname|h}</td></tr>
+		<tr><th>Total Data Files</th><td>${app.totalfiles|h}</td></tr>
+		<tr><th>Installation Date</th><td><span class="date">${app.installation_date|h}</span></td></tr>
+		<tr><th>Last Update Date</th><td><span class="date">${app.update_date|h}</spa></td></tr>
+		<tr><th>APP Version</th><td>${app.version|h}</td></tr>
+		<tr><th>Binary/Package Location:</th><td>${app.binary|h}</td></tr>
+		<tr><th>APP User</th><td>${app.app_user|h}</td></tr>
+		<tr><th>Installer</th><td>${app.installer|h}</td></tr>
+		<tr>
+			<th>Permissions</th>
+			<td>
+				% if len(app.permissions) != 0:
+				<ul class="list-group">
+					% for perm in app.permissions:
+						<li class="list-group-item">${perm|h}</li>
+					% endfor
+				</ul>
+				% else:
+					No Permissions found or defined
+				% endif
+			</td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/docs.min.js"></script>
+	<script src="/js/ui.js"></script>
+	<script src="/js/jquery.dataTables.min.js"></script>
+	<script src="/js/jquery.nicescroll.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".sidebar").niceScroll({horizrailenabled:false});
+			$("li#appinfo").addClass("active");
+		});
+	</script>
+</body>
+</html>

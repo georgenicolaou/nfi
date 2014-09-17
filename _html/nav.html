@@ -1,0 +1,38 @@
+<%page args="incase=None"/>
+<div id="navbar-top" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> 
+					<span class="icon-bar"></span> <span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand hidden-xs" href="#">Silensec's Nyuki Forensics Investigator (NFI)</a>
+				<a class="navbar-brand visible-xs" href="javascript:history.go(-1);"><i class="fa fa-chevron-left"></i></a>
+				<a class="navbar-brand visible-xs" href="javascript:history.go(1);"><i class="fa fa-chevron-right"></i></a>
+				<a class="navbar-brand visible-xs" href="#">Silensec's NFI</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+					% if incase != None:
+					<li><a data-toggle="modal" data-target="#mSettings" href=""><i class="fa fa-cogs"></i> Settings</a></li>
+					% endif
+					<!-- 
+					% if applications != None:
+					<li><a href="case/save"><i class="fa fa-save"></i> Save Case</a></li>
+					% else:
+					<li><a href="case/load"><i class="fa fa-folder-open"></i> Open Case</a></li>
+					% endif
+					<li><a href="/settings"><i class="fa fa-cogs"></i> Settings</a></li>
+					 -->
+				</ul>
+				
+				<!-- 
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Search...">
+				</form>
+				 -->
+			</div>
+		</div>
+	</div>

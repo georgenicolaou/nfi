@@ -1,0 +1,39 @@
+<%page args="catalog,apps"/>
+<%include file="head.html"/>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div id="content" class="col-lg-12 main">
+				<h2>Catalog</h2>
+				${catalog}
+				<h2>Apps</h2>
+				${apps}
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/docs.min.js"></script>
+	<script src="/js/ui.js"></script>
+	<script src="/js/jquery.dataTables.min.js"></script>
+	
+	<script>
+		$(document).ready(function(){
+			$(".panel-heading").click(function(e){
+				e.preventDefault();
+				$(this).parent().find(".panel-body").toggle();
+			});
+			$(".itemslist").click(function(e){
+				e.preventDefault();
+				var $el = $(this);
+				$el.parent().children("ol").toggle();
+				$el.toggleClass("fa-plus fa-minus");
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<%page args="message,case_id"/>
+<%include file="head.html"/>
+<body>
+	<%include file="nav.html"/>
+	<div class="col-lg-12">
+		<div class="col-lg-4 col-lg-offset-4 col-md-4 col-lg-offset-6 col-sm-12" style="margin-top:15px;">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h3 class="panel-title">Error: ${message}</h3>
+				</div>
+				<div class="panel-body">
+				<p>Case ${case_id|h} is not loaded by the system possibly because the software was restarted or the case was manually or automatically unloaded.</p>
+				<p>To load this case please click on the button below:</p>
+				<a class="btn btn-success" href="/case/load/${case_id}">Load</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+<%include file="jsincludes.html"/>
+</html>

@@ -1,0 +1,40 @@
+<%page args="modules, case, store, settings=None"/>
+<%include file="head.html"/>
+<body>
+	<%include file="nav.html" args="incase=True"/>
+	<script>
+		var CASE_ID = ${case['case_id']}
+	</script>
+	<div class="row affix-row">
+		<%include file="case-sidenav.html" args="modules=modules,case=case,store=store"/>
+		<div id="content" class="col-sm-9 col-md-10 affix-content">
+		</div>
+	</div>
+
+	<div id="_settings" class="hidden">
+		% for name,val in settings.get_all_settings().iteritems():
+			<input id="setting_${name|h}" value="${val|h}" />
+		% endfor
+	</div>
+	
+	<%include file="modal_settings.html" args="settings=settings"/>
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/docs.min.js"></script>
+	<script src="/js/ui.js"></script>
+	<script src="/js/jquery.dataTables.min.js"></script>
+	<script src="/js/bootstrap.datatables.js"></script>
+	<script src="/js/jquery.nicescroll.min.js"></script>
+	<script src="/js/moment.min.js"></script>
+	<script src="/js/moment-timezone.min.js"></script>
+	<script src="/js/bootstrap-select.min.js"></script>
+	<script src="/js/daterangepicker.js"></script>
+	<script src="/js/d3.min.js"></script>
+	<script src="/js/d3pie.js"></script>
+	<script src="/js/case.js"></script>
+	
+</body>
+</html>

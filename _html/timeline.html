@@ -1,0 +1,262 @@
+<%page args="title,contents"/>
+
+<style>
+
+.timeline-container {
+	padding: 0 10px;
+}
+
+#timeline {
+  list-style: none;
+  position: relative;
+}
+#timeline:before {
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  content: " ";
+  width: 2px;
+  background-color: #4997cd;
+  left: 50%;
+  margin-left: -1.5px;
+}
+#timeline .clearFix {
+  clear: both;
+  height: 0;
+}
+#timeline .timeline-badge {
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  margin-left: -25px;
+  background-color: #4997cd;
+  z-index: 100;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+#timeline .timeline-badge span.timeline-balloon-date-day {
+  font-size: 1.4em;
+}
+#timeline .timeline-badge span.timeline-balloon-date-month {
+  font-size: .7em;
+  position: relative;
+  top: -10px;
+}
+
+#timeline .timeline-badge.timeline-filter-movement {
+  background-color: #ffffff;
+  font-size: 1.7em;
+  height: 35px;
+  margin-left: -18px;
+  width: 35px;
+  top: 40px;
+}
+#timeline .timeline-badge.timeline-filter-movement a span {
+  color: #4997cd;
+  font-size: 1.3em;
+  top: -1px;
+}
+#timeline .timeline-badge.timeline-future-movement {
+  background-color: #ffffff;
+  height: 35px;
+  width: 35px;
+  font-size: 1.7em;
+  top: -16px;
+  margin-left: -18px;
+}
+#timeline .timeline-badge.timeline-future-movement a span {
+  color: #4997cd;
+  font-size: .9em;
+  top: 2px;
+  left: 1px;
+}
+#timeline .timeline-movement {
+  border-bottom: dashed 1px #4997cd;
+  position: relative;
+}
+#timeline .timeline-movement.timeline-movement-top {
+  height: 60px;
+}
+#timeline .timeline-movement .timeline-item {
+  padding: 20px 0;
+}
+#timeline .timeline-movement .timeline-item .timeline-panel {
+  border: 1px solid #d4d4d4;
+  border-radius: 3px;
+  background-color: #FFFFFF;
+  color: #666;
+  padding: 10px;
+  position: relative;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+}
+#timeline .timeline-movement .timeline-item .timeline-panel .timeline-panel-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline-panel-ul li span.success {
+	color: #468c1f;
+  	font-size: 1.3em;
+}
+
+.timeline-panel-ul li span.danger {
+	color: #e2001a;
+	font-size: 1.3em;
+}
+
+.timeline-panel-ul li span.primary {
+	color: #2e6da4;
+	font-size: 1.3em;
+}
+
+.timeline-panel-ul li span.warning {
+	color: #f0ad4e;
+	font-size: 1.3em;
+}
+
+.timeline-panel-ul li span.info {
+	color: #5bc0de;
+	font-size: 1.3em;
+}
+
+
+#timeline .timeline-movement .timeline-item .timeline-panel.left .timeline-panel-ul li {
+  color: #666;
+}
+
+
+@media (min-width: 767px) {
+	.timeline-panel:before {
+	    border-color: rgba(0, 0, 0, 0) #CCCCCC;
+	    border-style: solid;
+	    border-width: 15px 0 15px 15px;
+	    content: " ";
+	    display: inline-block;
+	    position: absolute;
+	    right: -15px;
+	    top: 26px;
+	}
+	
+	.timeline-panel:after {
+		border-color: rgba(0, 0, 0, 0) #FFFFFF;
+	    border-style: solid;
+	    border-width: 14px 0 14px 14px;
+	    content: " ";
+	    display: inline-block;
+	    position: absolute;
+	    right: -14px;
+	    top: 27px;
+	}
+	
+	.timeline-panel.right:before {
+	   	border-left-width: 0;
+	    border-right-width: 15px;
+	    left: -15px;
+	    right: auto;
+	}
+	
+	.timeline-panel.right:after {
+	    border-left-width: 0;
+	    border-right-width: 14px;
+	    left: -14px;
+	    right: auto;
+	}
+	#timeline .timeline-movement .timeline-item .timeline-panel.left .timeline-panel-ul {
+	  text-align: right;
+	}
+	#timeline .timeline-movement .timeline-item .timeline-panel.right .timeline-panel-ul {
+	  text-align: left;
+	}
+}
+@media (max-width: 767px) {
+	#timeline .timeline-movement .timeline-item {
+  		padding: 20px 15px;
+	}
+	
+	.timeline-movement .timeline-item:nth-child(2) {
+	    margin-top: 80px;
+	}
+	
+}
+</style>
+<div class="timeline-container">
+	% if title != None: 
+    <div class="page-header">
+		<h1 id="">${title|h}</h1>
+	</div>
+	% endif
+	<div id="timeline">
+		<div class="row timeline-movement timeline-movement-top">
+		    <!-- 
+		    <div class="timeline-badge timeline-future-movement">
+		        <a href="#">
+		            <span class="glyphicon glyphicon-plus"></span>
+		        </a>
+		    </div>
+		     -->
+		    <div class="timeline-badge timeline-filter-movement">
+		        <a href="#">
+		            <span class="glyphicon glyphicon-time"></span>
+		        </a>
+		    </div>
+		</div>
+
+<!-- 
+
+  <div class="timeline-badge">
+        <span class="timeline-balloon-date-day">18</span>
+        <span class="timeline-balloon-date-month">APR</span>
+    </div>
+ -->
+		% for content in contents:
+		<div class="row timeline-movement">
+			<div class="timeline-badge">
+				<span class="timeline-balloon-date-day">${content.day}</span>
+				<span class="timeline-balloon-date-month">${content.month.upper()}</span>
+			</div>
+				% for i,item in enumerate(content.items):
+				<div class="col-sm-6 timeline-item">
+					<div class="row">
+						% if i % 2 == 0:
+						<div class="col-sm-11">
+							<div class="timeline-panel left">
+								<ul class="timeline-panel-ul">
+									% if len(item.title) != 0:
+									<li><span class="${item.itemclass}">${item.title} <i class="fa ${item.icon}"></i></span></li>
+									% endif
+									% for info in item.info:
+									<li><span class="causale">${info}</span></li>
+									% endfor
+									<li><p><small class="text-muted"><span class="date">${item.date}</span> <i class="glyphicon glyphicon-time"></i></small>
+								</ul>
+							</div>
+						</div>
+						% else:
+						<div class="col-sm-offset-1 col-sm-11">
+							<div class="timeline-panel right">
+								<ul class="timeline-panel-ul">
+									<li><span class="${item.itemclass}"><i class="fa ${item.icon}"></i> ${item.title}</span></li>
+									% for info in item.info:
+									<li><span class="causale">${info}</span></li>
+									% endfor
+									<li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <span class="date">${item.date}</span></small>
+								</ul>
+							</div>
+						</div>
+						% endif
+					</div>
+				</div>
+				% endfor
+		</div>
+		% endfor
+	</div>
+</div>

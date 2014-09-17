@@ -1,0 +1,168 @@
+<%page args="cases=None,settings=None"/>
+<div class="container" style="width:100%;">
+	<div class="row">
+        <div class="col-lg-12 bhoechie-tab-container">
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 bhoechie-tab-menu">
+              <div class="list-group">
+                <a href="#" class="list-group-item active text-center">
+                  <h4 class="fa fa-folder"></h4><br/>Cases
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="fa fa-plus"></h4><br/>New Case
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="fa fa-mobile"></h4><br/>Device Extraction
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="fa fa-credit-card"></h4><br/>SIM Card
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="fa fa-cogs"></h4><br/>Settings
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9 bhoechie-tab">
+                <div class="bhoechie-tab-content active">
+                    <table class="table">
+                    	<thead>
+	                    	<tr>
+		                    	<th>Case Name</th>
+		                    	<th>Date</th>
+		                    	<th>Officer(s)</th>
+		                    	<th>Comments</th>
+		                    	<th>Actions</th>
+	                    	</tr>
+                    	</thead>
+                    	<tbody>
+                    	% if cases == None or len(cases) == 0:
+                    		<tr><td colspan="5">No Cases</td>
+                    	% else:
+                    		% for case in cases:
+                    		<tr>
+                    			<td>${case['case_name']|h}</td>
+                    			<td><span class="date">${case['case_date']|h}</span></td>
+                    			<td>${case['officers']|h}</td>
+                    			<td>${case['case_comments']|h}</td>
+                    			<td>
+                    				<a href="/case/load/${case['case_id']}" class="btn btn-primary btn-sm"><i class="fa fa-folder-open-o"></i> View</a>
+                    				<a href="/delcase/${case['case_id']}" data-action="removerow($this.parents('tr'));"class="btn btn-danger btn-sm ajaxbtn"><i class="fa fa-times"></i> Delete</a>
+                    			</td>
+                    		</tr>
+                    		% endfor
+                    	% endif
+                    	</tbody>
+                    </table>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <form action="createcase" class="form-horizontal">
+						<fieldset>
+						<legend>New Case</legend>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="casename">Case Name</label>  
+						  <div class="col-md-5">
+						  <input id="casename" name="casename" class="form-control input-md" required="" type="text">  
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="officers">Select Officers</label>
+						  <div class="col-md-5">
+						    <select required aria-required="true" id="officers" name="officers" class="form-control" multiple="multiple">
+						    </select>
+						    <div style="text-align:right;">
+						    	<a data-toggle="modal" data-target="#mAddOfficers" class="btn btn-link"><i class="fa fa-plus"></i> Add Officer</a>
+						    </div>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="casecomments">Case Comments</label>
+						  <div class="col-md-4">                     
+						    <textarea class="form-control" id="casecomments" name="casecomments">No Comments</textarea>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="ctype">Image Type</label>
+						  <div class="col-md-4">
+						  <div class="radio">
+						    <label for="ctype-0">
+						      <input name="ctype" id="ctype-0" value="1" checked="checked" type="radio">
+						      Mounted Data Image
+						    </label>
+							</div>
+						  <div class="radio">
+						    <label for="ctype-1">
+						      <input disabled="disabled" name="ctype" id="ctype-1" value="2" type="radio">
+						      Device Backup
+						    </label>
+							</div>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="apps">Apps/Backup Location</label>  
+						  <div class="col-md-5">
+						  <input id="apps" name="apps" placeholder="Eg: /mnt/android" class="form-control input-md" type="text" required="">
+						  <span class="help-block">Specify the Read-Only location of the mounted image containing the device's data file system.</span>  
+						  </div>
+						</div>
+						<!-- 
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="system">System Location</label>  
+						  <div class="col-md-5">
+						  <input id="system" name="system" placeholder="Eg: /mnt/android_systempartition/" class="form-control input-md" type="text">
+						  <span class="help-block">Specify the Read-Only location of the mounted system partition</span>  
+						  </div>
+						</div>
+						 -->
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="go" data-action="newcase">Create Case</label>
+						  <div class="col-md-4">
+						    <button name="go" data-action="newcase" type="submit" class="btn btn-primary">Go</button>
+						  </div>
+						</div>
+						</fieldset>
+						</form>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <center>
+                      <h1 class="fa fa-mobile" style="font-size:12em;color:#55518a"></h1>
+                      <h2 style="margin-top: 0;color:#55518a">Coming Soon</h2>
+                    </center>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <center>
+                      <h1 class="fa fa-credit-card" style="font-size:12em;color:#55518a"></h1>
+                      <h2 style="margin-top: 0;color:#55518a">Coming Soon</h2>
+                    </center>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <form id="changesettings" action="changesettings" class="form-horizontal">
+						<fieldset>
+						<legend>Global Settings</legend>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="timezone">Global Dates Timezone</label>  
+						  <div class="col-md-5">
+						  <select id="timezone" name="timezone" class="form-control" type="select">
+						  	<option value="local">Local</option>
+						  </select>
+						  <span class="help-block">Change the default global timezone of the software when displaying dates. The "Local" option reverts to your default browser locale.</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="tmpdir">Temporary Directory</label>  
+						  <div class="col-md-5">
+						  <input id="tmpdir" name="tmpdir" placeholder="Eg: /tmp" class="form-control input-md" type="text" required="">
+						  <span class="help-block">Set temporary directory (all files are deleted after processing)</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="go" data-action="newcase">Actions</label>
+						  <div class="col-md-4">
+						    <button name="save" data-action="savesettings" type="submit" class="btn btn-primary">Save</button>
+						  </div>
+						</div>
+						</fieldset>
+						</form>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>

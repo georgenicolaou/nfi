@@ -1,0 +1,70 @@
+<form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>New Case</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="casename">Case Name</label>  
+  <div class="col-md-5">
+  <input id="casename" name="casename" placeholder="" class="form-control input-md" required="" type="text">
+  <span class="help-block">Insert Case Name Here</span>  
+  </div>
+</div>
+
+<!-- Select Multiple -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="officers">Select Officers</label>
+  <div class="col-md-5">
+    <select id="officers" name="officers" class="form-control" multiple="multiple">
+      <option value="1">Option one</option>
+      <option value="2">Option two</option>
+    </select>
+  </div>
+</div>
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="type">Image Type</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="type-0">
+      <input name="type" id="type-0" value="1" checked="checked" type="radio">
+      Logical Image Dump
+    </label>
+	</div>
+  <div class="radio">
+    <label for="type-1">
+      <input name="type" id="type-1" value="2" type="radio">
+      Backup Folder
+    </label>
+	</div>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="apps">Apps/Backup Location</label>  
+  <div class="col-md-5">
+  <input id="apps" name="apps" placeholder="Eg: /mnt/android/data/data" class="form-control input-md" type="text">
+  <span class="help-block">Specify the Read-Only location of the mounted image or backup which contains the applications</span>  
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="system">System Location</label>  
+  <div class="col-md-5">
+  <input id="system" name="system" placeholder="Eg: /mnt/android_systempartition/" class="form-control input-md" type="text">
+  <span class="help-block">Specify the Read-Only location of the mounted system partition</span>  
+  </div>
+</div>
+
+<div class="checkbox">
+    <label>
+      <input name="save" type="checkbox"> Save After Processing
+    </label>
+  </div>
+</fieldset>
+</form>

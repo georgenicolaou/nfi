@@ -1,0 +1,6 @@
+<%page args="error=None"/>
+
+% if error != None:
+<h3>${error|h}</h3>
+% else:
+<h3>Unspecified error occured</h3>

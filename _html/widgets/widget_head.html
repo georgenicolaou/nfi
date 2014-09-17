@@ -1,0 +1,14 @@
+<%page args="col_size,title=None"/>
+<div class="col-lg-${col_size}">
+<div class="panel panel-primary">
+		% if title != None:
+		<div class="panel-heading">
+			<span>${title|h}</span>
+			<div class="pull-right">
+				<a class="btn btn-default btn-xs" onclick="slidepanelbody(this);">
+					<i class="fa fa-minus"></i>
+				</a>
+			</div>
+		</div>
+		% endif
+		<div class="panel-body">

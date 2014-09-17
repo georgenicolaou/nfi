@@ -1,0 +1,52 @@
+<%page args="case_id,applications=None,module=None"/>
+
+
+<h3>Device Applications</h3>
+<hr />
+<table id="appstbl" class="table table-condensed dtcapable">
+	<thead>
+		<tr>
+			<th>Package</th>
+			<th>Name</th>
+			<th>User ID</th>
+			<th>Last Run</th>
+			<th>Install Date <span class="fa fa-info-circle text-danger" data-toggle="tooltip" data-placement="top" title="Red entries might not be valid"></span></th>
+			<th># Files</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+	% for app in applications:
+		<tr>
+			<td>${app.name}</td>
+			% if len(app.cname) == 0:
+				<td>Unknown</td>
+			% else:
+				<td>${app.cname}</td>
+			% endif
+			<td>${app.uid}</td>
+			% if app.last_run != None:
+			<td data-order="${app.last_run}"><span class="date">${app.last_run}</span></td>
+			% else:
+			<td><span>N/A</span></td>
+			% endif
+			% if app.installation_date != None:
+				<td data-order="${app.get_install_date()}"><span class="date">${app.get_install_date()}</span></td>
+			% else:
+				<td data-order="${app.get_install_date()}"><span class="date text-danger">${app.get_install_date()}</span></td>
+			% endif
+			<td>${app.totalfiles}</td>
+			<td><a href="#/${module.internal_name|h}/app/${case_id}/${app.name}" onclick="anav2view(this);" class="btn btn-primary btn-sm">View</a></td>
+		</tr>
+	% endfor
+	</tbody>
+</table>
+
+	<script>
+		$(document).ready(function(){
+			//$("#appstbl").dataTable({});
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
+</body>
+</html>

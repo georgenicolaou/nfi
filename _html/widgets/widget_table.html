@@ -1,0 +1,57 @@
+<%page args="id,col_size,aspect,title,data"/>
+<%include file="widget_head.html" args="col_size=col_size,title=title"/>
+<table id="widget_${id}" class="table">
+</table>
+<%include file="widget_foot.html"/>
+
+<script>
+(function(){
+	var widget = $("#widget_${id}");
+	var data = ${data};
+	
+	/*
+	A bit of a hack, but hey it looks nice...
+	*/
+	if( data.kv  ) {
+		widget.append(
+			$('<tbody>').append(function(){
+				var that_body = $(this);
+				$.each(data.items,function(i,row){
+					that_body.append(
+						$('<tr>').append(
+							$('<th>').html(row[0]),
+							$('<td>').html(row[1])
+						)
+					)
+				});
+			})
+		);
+	}
+	else {
+		widget.append(
+			$('<thead>').append(
+				$('<tr>').append(function(){
+					var that = $(this);
+					$.each(data.head,function(i,item){
+						that.append($('<th>').html(item));
+					})
+				})
+			),
+			$('<tbody>').append(function(){
+				var that_body = $(this);
+				$.each(data.items,function(i,row){
+					that_body.append(
+						$("<tr>").append(function(){
+							var that_row = $(this);
+							$.each(row,function(j,col){
+								that_row.append($('<td>').html(col));
+							})
+						})
+					);
+				})
+			})
+		);	
+	}
+	
+})();
+</script>

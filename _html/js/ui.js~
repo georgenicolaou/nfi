@@ -1,0 +1,192 @@
+$(document).ready(function(){
+	if( window.location.pathname == "/" ) {
+		getofficers();
+	}
+	$("#sideclear").click(function(){
+		$("#sidesearch").val("");
+		$(".nav-sidebar a.nav-header").show();
+	});
+	$("#sidesearch").keydown(function(e){
+		var search_term = $(this).val();
+		if( search_term.length == 0 ) {
+			$("ul.nav-sidebar > li > a.nav-header").show();
+		}
+		else {
+			$("ul.nav-sidebar > li > a.nav-header").hide();
+			$("ul.nav-sidebar > li > a.nav-header:contains("+search_term+")").show();
+		}
+	});
+	
+	//Application tree
+    $('.filetree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.filetree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('fa-folder').removeClass('fa-folder-open');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('fa-folder-open').removeClass('fa-folder');
+        }
+        e.stopPropagation();
+    });
+    
+    var locsplt = location.pathname.split("/");
+    if( locsplt.length > 2 ) {
+    	var $e = $("a[href='/case/app/"+locsplt[3]+"']");
+    	if($e.length != 0) {
+    		$e[0].scrollIntoView();
+    		$e.parent().addClass("active");
+    	}
+    } 
+    
+    $(".date").each(function(i,item){
+    	var date = new Date(parseInt(item.innerHTML)*1000);
+    	item.innerHTML = date.toLocaleFormat();
+    });
+    
+    if( locsplt[2] == "view" && $(".nav.nav-tabs").length ) {
+    	$("a[data-toggle='tab']").on('shown.bs.tab',function(e){
+    		$( $.fn.dataTable.tables( true ) ).DataTable().columns.adjust();
+    	});
+    	var datasource = location.pathname.split("/").splice(3).join("/");
+    	$("a[data-toggle='tab']:first").tab("show")
+    	$(".tab-pane table.todt").each(function(i,item){
+    		$this = $(this);
+    		cols = [];
+    		$this.find("th").each(function(i,item){
+    			cols.push({'data':item.innerHTML});
+    		});
+    		$this.dataTable({
+    			"processing": true,
+    			"serverSide": true,
+    			"ajax": {
+    				"url": "/case/getdata/"+datasource+"/"+$this.parent().attr("id"),
+    				"type": "POST",
+    			},
+    			"columns": cols,
+    			"fnDrawCallback": function( oSett ) { datefieldsupdate(); }
+    		});
+    	});
+    	/*
+    	$(".tab-pane table").dataTable({
+    		"processing": true,
+    		"serverSide": true,
+    		"ajax": "/getdata/"+datasource+"/"+$(this).parent().attr("id")
+    	});
+    	*/
+    }
+    $('[data-toggle=offcanvas]').click(function() {
+	    $('.row-offcanvas').toggleClass('active');
+	  });
+    
+    $("form").submit(function(e){
+    	e.preventDefault();
+    	var $this = $(this);
+    	var btn = $this.find("button[type='submit']"); 
+    	btn.button('loading');
+    	$.post( this.action, $this.serializeArray(), function(a){
+    		btn.button('reset');
+    		var action = window[btn.data("action")];
+    		if(typeof action == "function") {
+    			action(a);
+    		}
+    		$this.parents(".modal").modal("hide");
+    	}, 'json').fail(function(){alert("Request Failure");btn.button("reset")});
+    }); 
+    
+    $(".ajaxbtn").click(function(e){
+    	e.preventDefault();
+    	$this = $(this);
+    	$.post( this.href, null, function(a){
+    		if( a.success == 1 ) {
+    			var action = $this.data("action")
+    			eval(action);
+    		}
+    	}, 'json');
+    })
+});
+
+function datefieldsupdate() {
+    $(".date").each(function(i,item){
+    	var date = new Date(parseInt(item.innerHTML)*1000);
+    	item.innerHTML = date.toLocaleFormat();
+    });
+}
+function removerow($row) {
+	$row.find("td").fadeOut('fast',function(){
+		$row.remove();
+	});
+}
+function newcase(a) {
+	window.location = "/case/scan/" + a.case_id;
+}
+function getofficers() {
+	$.post( "/getofficers", null, function(a){
+		$officers = $("#officers");
+		$officers.html("")
+		for(var i=0;i<a.length;i++) {
+			var o = new Option(a[i].officer_name,a[i].officer_id);
+			$officers.append(o);
+		}
+	}, 'json');
+}
+
+function parseuri(){
+	
+}
+function onpageload() {
+	$('.tree-toggle').click(function () {
+		$(this).parent().children('ul.tree').toggle(200);
+	});
+	
+	$("a.file-nav").click(function(e){
+		e.preventDefault();
+		$("#content").load("case/"+$(this).attr("rel"),function(){
+			onsubload();
+		});
+	});
+}
+
+function onsubload() {
+	
+	/*$(".tab-pane table").each(function(i,item){
+		
+		$(item).dataTable();
+	});
+	*/
+	
+}
+
+function toggleallpanels(e) {
+	var $e = $(e); 
+	$(".panel").toggle(0,function(){
+		$e.find("i").toggleClass( "fa-plus fa-minus" );
+		var txt = $e.find("span")
+		txt.html( txt.html() == "Expand" ? "Retract" : "Expand" );
+	});
+}
+function togglefileinfo(e) {
+	var $e = $(e);
+	$e.parent().next("div.panel").toggle(400,function(){
+		$e.toggleClass("panelbtn")
+	});
+}
+function hideshow(e) {
+	var $e = $(e)
+	$e.next("pre,div").toggle(400,function(){
+		$e.children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+	});
+}
+
+
+$(document).ready(function() {
+    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+    });
+});

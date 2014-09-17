@@ -1,0 +1,192 @@
+<%page args="case_id,app,module,timelinecont=None"/>
+
+<%doc>
+This is a really bad idea so fix it
+TYPE_NONE = 0
+TYPE_EMPTY = 1
+TYPE_TABLE = 2
+TYPE_DATA = 3
+TYPE_STRING = 4
+TYPE_MULTI = 5
+TYPE_XML = 6
+TYPE_IMAGE = 7
+</%doc>
+<%def name="get_icon(ftype)">
+	% if ftype == 5 or ftype == 2:
+		fa-database
+	% elif ftype == 3:
+		fa-file-archive-o
+	% elif ftype == 4:
+		fa-file-text-o
+	% elif ftype == 6:
+		fa-file-code-o
+	% elif ftype == 7:
+		fa-file-image-o
+	% else:
+		fa-file-o
+	%endif
+</%def>
+
+<%def name="print_file(fobj,path,app)">
+	<li class="ftree">
+		<div class="btn-group">
+			<button class="btn btn-default" onclick="togglefileinfo(this);">
+				<i class="fa file ${get_icon(fobj.ftype)}"></i> ${fobj.name} 
+			</button>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			   <span class="caret"></span>
+			   <span class="sr-only">Toggle Dropdown</span>
+			 </button>
+		  <ul class="dropdown-menu pull-right" role="menu">
+		    <li><a href="#/${module.internal_name|h}/view/${case_id}${path}/${fobj.name|u}"><i class="fa fa-search"></i> View File</a></li>
+		    <li><a href="#/${module.internal_name|h}/hexdump$/${case_id}${path}/${fobj.name|u}"><i class="fa fa-eye"></i> Hex Dump</a></li>
+		    <li><a href="#/${module.internal_name|h}/strings$/${case_id}${path}/${fobj.name|u}"><i class="fa fa-list"></i> Extract Strings</a></li>
+		  </ul>
+		</div>
+		<div class="panel panel-default no-margin no-radius" style="display:none;">
+			<table class="table" class="no-margin">
+				<tbody>
+					<tr>
+						<th>Signature (SHA-256)</th>
+						<td>${fobj.sha256sig}</td>
+					</tr>
+					<tr>
+						<th>Type</th>
+						<td>${fobj.mime}</td>
+					</tr>
+					<tr>
+						<th>Size (bytes)</th>
+						<td>${fobj.size}</td>
+					</tr>
+					<tr>
+						<th>Change Time</th>
+						<td class="date">${fobj.ctime}</td>
+					</tr>
+					<tr>
+						<th>Access Time</th>
+						<td class="date">${fobj.atime}</td>
+					</tr>
+					<tr>
+						<th>Modification Time</th>
+						<td class="date">${fobj.mtime}</td>
+					</tr>
+					<tr>
+						<th>User ID/Group ID</th>
+						<td>${fobj.uid}/${fobj.gid}</td>
+					</tr>
+					<tr>
+						<th>Mode</th>
+						<td>${fobj.mode}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="panel-footer" style="text-align:right;">
+				<a class="btn btn-primary" href="#/${module.internal_name|h}/view/${case_id}${path}/${fobj.name|u}"><i class="fa fa-magic"></i> View File</a>
+		    	<a class="btn btn-primary" href="#/${module.internal_name|h}/hexdump/${case_id}${path}/${fobj.name|u}"><i class="fa fa-eye"></i> Hex Dump</a>
+		    	<a class="btn btn-primary" href="#/${module.internal_name|h}/strings/${case_id}${path}/${fobj.name|u}"><i class="fa fa-list"></i> Extract Strings</a>
+			</div>
+		</div>
+		<a href="#/${module.internal_name|h}/view/${case_id}${path}/${fobj.name|u}"><i class="fa fa-search"></i></a>
+	</li>
+</%def>
+
+<%def name="print_dir_tree(appdir,root,app)">
+	<% 
+		import os
+		dirpath = root+'/'+os.path.basename(appdir.name) 
+	%>
+		<li class="ftree">
+			<span class="dir"><i class="fa fa-folder-open folder" style="margin-right: 5px;"></i>${appdir.name}</span>
+			% if len(appdir.directories) != 0 or len(appdir.files) != 0:
+				<ul class="ftree">
+					% if len(appdir.directories) != 0:
+						% for subdir in appdir.directories:
+							${print_dir_tree(subdir,dirpath,app)}
+						% endfor
+					% endif
+					% if len(appdir.files) != 0:
+						% for fobj in appdir.files:
+							${print_file(fobj,dirpath,app)}
+						% endfor
+					% endif
+				</ul>
+			% endif
+		</li>
+</%def>
+
+<h3>${app.name|h} (${app.cname|h})</h3>
+<hr style="margin: 5px 0px;" />
+
+<div class="panel with-nav-tabs panel-default">
+	<div class="panel-heading">
+		<ul class="nav nav-tabs" role="tablist">
+			<li><a href="#appfiles" role="tab" data-toggle="tab">Data Files</a></li>
+			<li><a href="#appinfo" role="tab" data-toggle="tab">App Info</a></li>
+			%if timelinecont != None:
+			<li><a href="#timeline" role="tab" data-toggle="tab">Usage Timeline <span title="" data-placement="bottom" data-toggle="tooltip" class="fa fa-info-circle text-warning" data-original-title="Other usage statistics might not have been logged"></span></a></li>
+			% endif
+		</ul>		
+	</div>
+	<div class="panel-body">
+		<div class="tab-content">
+			<div class="tab-pane" id="appfiles">
+				<div class="filetree">
+					<div style="text-align:right;">
+						<button class="btn btn-primary" onclick="toggleallpanels(this);"><i class="fa fa-plus"></i> <span>Expand</span> All</button>
+					</div>
+				    <ul>
+				    	% for appdir in app.directories:
+				    		${print_dir_tree(appdir,'',app)}
+				    	% endfor
+				    </ul>
+				</div>
+			</div>
+			<div class="tab-pane" id="appinfo">
+				<table class="table table-condensed table-hover">
+					<tbody>
+						<tr><th>Package Name</th><td>${app.name|h}</td></tr>
+						<tr><th>Known Name</th><td>${app.cname|h}</td></tr>
+						<tr><th>Total Data Files</th><td>${app.totalfiles|h}</td></tr>
+						<tr><th>Installation Date</th><td><span class="date">${app.installation_date|h}</span></td></tr>
+						<tr><th>Last Update Date</th><td><span class="date">${app.update_date|h}</spa></td></tr>
+						<tr><th>APP Version</th><td>${app.version|h}</td></tr>
+						<tr><th>Binary/Package Location:</th><td>${app.binary|h}</td></tr>
+						<tr><th>APP User</th><td>${app.app_user|h}</td></tr>
+						<tr><th>Installer</th><td>${app.installer|h}</td></tr>
+						<tr>
+							<th colspan="2">Permissions</th>
+						</tr>
+						<tr>
+							<td colspan="2">
+								% if len(app.permissions) != 0:
+								<ul class="list-group">
+									% for perm in app.permissions:
+										<li class="list-group-item">${perm|h}</li>
+									% endfor
+								</ul>
+								% else:
+									No Permissions found or defined
+								% endif
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			% if timelinecont != None:
+			<div class="tab-pane" id="timeline">
+				<%include file="timeline.html" args="title=None,contents=timelinecont"/>
+			</div>
+			% endif
+		</div>
+	</div>
+</div>
+
+
+
+
+<script>
+	$(document).ready(function(){
+		$(".nav-tabs li:first a").click();
+		initapptree();
+	})
+</script>

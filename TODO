@@ -1,0 +1,98 @@
+User Interface
+--------------
+X Fix datatable CSS
+~ Application Explorer: Navigate back to application files after viewing an
+	individual file.
+- Color each view
+X Fix JS and navigation issues
+X Appfilter add X to errase date (and join with js for linked input)
+- When navigating to app or file through appfilter the application's li is not
+	into view (but is active).
+	
+Features
+--------
+- Security Features:
+	- Provide some form of validation for plugins and modules. Idea: Sign
+	modules with a Silensec private key and verify them using the public key.
+	However, this would prevent developers from creating new modules thus we
+	need to add a "Development Mode" switch in the settings that bypasses the
+	check. However, malicious users might turn on the switch themselves...
+	- Provide some form of validation of pickled saved files for cases. We
+	could create individual user accounts and sign them using a user private
+	key and then verify them before loading. Again, this would prevent other
+	users from verifying the file unless all users can "see" the public keys of
+	other users. However, if a single user is compromised then the entire model
+	collapses...
+- Provide some form of APK analysis
+x Binary files reading?
+X SQLite File Reading for MiscParser (Catalog)
+X MiscParser option to parse all files in a directory given a wildchar (*) and
+	treat them as the same file for example: /data/system/registered_services/*
+	or even partial filenames such as "system_app_native_crash@*"
+	(used regex)
+~ Alternatively specified folders that go through "Application Parser module"
+	maybe convert the module into something more generic
+X Application Filter
+~ Dashboard?..
+X Use re in ApplicationParser
+X Add new tab in application view (in appexplorer) with an aggregated timeline
+	showing the execution of Activities.
+- Display an indicator for loaded cases which also triggers a modal (or smth)
+	which lists all memory loaded cases with an option to unload them.
+
+
+Files to parse:
+---------------
+X device_policies.xml (contains information about password complexity)
+X gesture.key (binary file containing gesture hash)
+X password.key (password hash in ASCII format)
+- Files under /data/system/dropbox/*
+X locksettings.db
+		
+Known Issues:
+------------
+X Cannot parse some Android SQLite3 views due to content providers, functions,
+	etc not defined. This is why we are limiting extraction to only tables.
+	We can fix that through implementing the functions on python equivalents
+	using sqlite3.create_function()
+	con.create_function("md5", 1, md5sum)
+	con.create_collation("reverse", collate_reverse)
+- Some files or file paths contain URL-encoded characters (encoded on the fs).
+	when attempting to browse for example: 
+		/app/com.something/logs/user%40email.com/file.log
+	it fails because %40 becomes @ but the store has it as %40
+	
+	Also make sure to add %20 when file has space in it
+X There are quite a lot of race condition issues when multiple cases are used.
+	Unfortunately, this application was designed for a single user initially.
+	It might be required to slightly change the application structure a bit or
+	come up with a safe way to handle multiple requests.
+	Fixed  by adding case_id in every request
+	
+Optimization:
+-------------
+- Consider adding __slots__ list in modules to reduce memory usage
+	
+	
+	
+	
+	
+
+Catalog
+--------
+1. Browser history
+2. Contacts from facebook, linkedin, etc
+3. Chat messages:
+	X facebook
+	- twitter
+	X skype
+	X wassapp
+	- viber
+
+1. most used app*
+2. most contacted person*
+3. pie chart usage sms/phone/facebook/etc X
+4. Data usage X
+5. last contacts X
+6. last sms X
+7. last apps X

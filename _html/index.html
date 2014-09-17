@@ -1,0 +1,46 @@
+<%page args="cases=None, settings=None, error=None"/>
+<%include file="head.html"/>
+<body>
+	<%include file="modal.html"/>
+	<%include file="nav.html"/>
+	<div class="container-fluid">
+		<div class="row">
+			<div id="content" class="col-lg-12 main">
+			<noscript>
+  				<div class="alert alert-danger" role="alert">Warning: You need to have javascript enabled to run this application</div>
+  			</noscript>
+			% if error != None:
+				<p>${error}</p>
+			% else:
+				<%include file="home.html" args="cases=cases,settings=settings"/>
+			% endif
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/docs.min.js"></script>
+	<script src="/js/ui.js"></script>
+	<script src="/js/jquery.dataTables.min.js"></script>
+	<script src="/js/moment.min.js"></script>
+	<script src="/js/moment-timezone.min.js"></script>
+	
+	<div id="_settings" class="hidden">
+		% for name,val in settings.get_all_settings().iteritems():
+			<input id="setting_${name|h}" value="${val|h}" />
+		% endfor
+	</div>
+</body>
+
+<script>
+	$(document).ready(function(){
+		//update setting inputs
+		
+	});
+</script>
+
+</html>
