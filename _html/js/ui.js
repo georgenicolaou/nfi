@@ -94,7 +94,7 @@ function datefieldsupdate() {
     	var $item = $(item); 
     	var timestamp = parseInt(item.innerHTML);
     	var date = null;
-    	if( !isNaN(timestamp) && timestamp != 0) {
+    	if( !isNaN(timestamp) && timestamp != 0 && timestamp > 0) {
     		timestamp *= 1000;
     		if( timezone == "local" || !window['moment'] ) {
     			date = new Date(timestamp).toLocaleFormat()

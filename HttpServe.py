@@ -125,6 +125,7 @@ class Case(object):
                     function stb() {
                         window.scrollBy(0,document.body.scrollHeight);
                     }
+                    var success = true;
                 </script>
                 <style>body {color:#fff;font-family: monospace;}</style>
                 <pre>"""
@@ -135,6 +136,11 @@ class Case(object):
                 res = q.get()
                 if res == "FIN":
                     break
+                elif res == "FINERR":
+                    yield "<b>Error occurred, canceling scan!<b>"
+                    yield "<script>success = false;</script>"
+                    self.db.remove_case(caseobj["case_id"])
+                    return
                 yield res + "\n<script>stb();</script>"
             yield "<b>Finished, Saving Content please wait...</b>"
             yield "</pre>"

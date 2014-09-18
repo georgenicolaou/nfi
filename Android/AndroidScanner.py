@@ -21,7 +21,7 @@ along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from multiprocessing import Queue
 from threading import Thread
-import os
+import os,traceback
 
 from IScanner import IScanner
 from ApplicationParser import ApplicationParser
@@ -33,8 +33,17 @@ from ModuleImporter import Importer
 from IAuxiliary import IAuxiliary
 class AndroidScanner(IScanner):
     
+    def begin_scan(self,location):
+        try:
+            self._begin_scan(location)
+        except:
+            self.print_queue.put("**ERROR**:")
+            traceback.print_exc()
+            self.print_queue.put(traceback.format_exc())
+            self.print_queue.put("FINERR")
+        
     #Missing variables are initialized in IScanner
-    def begin_scan(self, location):
+    def _begin_scan(self, location):
         #----------------------------------------------------------------------
         #Initiating file system scanning and populating of data
         #----------------------------------------------------------------------

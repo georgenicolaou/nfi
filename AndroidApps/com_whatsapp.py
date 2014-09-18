@@ -26,31 +26,33 @@ import ConvertUtils
 
 class com_whatsapp(IApp):
     name = "com.whatsapp"
-    cname = "Android whatsapp"
-    databases = { 
-         "wa.db": [ 
-                KnownTable("wa_contacts", None, 
-                    {"status_timestamp":ConvertUtils.JsToUnix, 
-                     "photo_id_timestamp":ConvertUtils.JsToUnix }, 
-                    {"status_timestamp":DataTypes.DATE, 
-                     "photo_id_timestamp":DataTypes.DATE })
+    cname = "Android WhatsApp"
+    databases = {
+        "wa.db": [
+            KnownTable("wa_contacts", None,
+                {"status_timestamp":ConvertUtils.JsToUnix,
+                 "photo_id_timestamp":ConvertUtils.JsToUnix },
+                {"status_timestamp":DataTypes.DATE,
+                 "photo_id_timestamp":DataTypes.DATE })
             ],
-            "msgstore.db": [         
-                KnownTable("chat_list", None, 
-                    {"creation":ConvertUtils.JsToUnix },
-                    {"creation":DataTypes.DATE }),        
-                KnownTable("messages", None, 
-                    {"timestamp":ConvertUtils.JsToUnix,  
-        		     "received_timestamp":ConvertUtils.JsToUnix,
-        		     "send_timestamp":ConvertUtils.JsToUnix, 
-        		     "receipt_server_timestamp":ConvertUtils.JsToUnix,
-        		     "receipt_device_timestamp":ConvertUtils.JsToUnix },
-                    {"timestamp":DataTypes.DATE,
-        		     "received_timestamp":DataTypes.DATE,
-        		     "send_timestamp":DataTypes.DATE, 
-        		     "receipt_server_timestamp":DataTypes.DATE, 
-        		     "receipt_device_timestamp":DataTypes.DATE })
-            ],
+        "msgstore.db": [
+            KnownTable("chat_list", None,
+                {"creation":ConvertUtils.JsToUnix,
+                 "sort_timestamp":ConvertUtils.JsToUnix },
+                {"creation":DataTypes.DATE,
+                 "sort_timestamp":DataTypes.DATE }),
+            KnownTable("messages", None,
+                {"timestamp":ConvertUtils.JsToUnix,
+                 "received_timestamp":ConvertUtils.JsToUnix,
+                 "send_timestamp":ConvertUtils.JsToUnix,
+                 "receipt_server_timestamp":ConvertUtils.JsToUnix,
+                 "receipt_device_timestamp":ConvertUtils.JsToUnix },
+                {"timestamp":DataTypes.DATE,
+                 "received_timestamp":DataTypes.DATE,
+                 "send_timestamp":DataTypes.DATE,
+                 "receipt_server_timestamp":DataTypes.DATE,
+                 "receipt_device_timestamp":DataTypes.DATE }),
+        ],
   }
 
     def __init__(self):

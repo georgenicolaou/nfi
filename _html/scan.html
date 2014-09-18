@@ -33,7 +33,6 @@
 				$("#question").hide(function(){$("#scan").show(function(){startscan();})});
 			});
 		});
-		
 		function startscan() {
 			var ed = document.getElementById("dots");
 			var scandots = setInterval( function() {
@@ -45,24 +44,19 @@
 					ed.innerHTML += ".";
 				}
 			}, 200);
-			var $result = $("<iframe src=\"/case/doscan/${caseobj['case_id']}\" class=\"terminal\">");
+			var $result = $('<iframe id="terminal" src="/case/doscan/${caseobj['case_id']}" class="terminal">');
 			$result.load(function(){
 				clearInterval(scandots);
-				ed.innerHTML = '... Done! <a href="/case/index/'+${caseobj['case_id']}+'" class="btn btn-success btn-sm">Continue</a>';
+				var success = document.getElementById("terminal").contentWindow.success;
+				if(success) {
+					ed.innerHTML = '... Done! <a href="/case/index/'+${caseobj['case_id']}+'" class="btn btn-success btn-sm">Continue</a>';	
+				}
+				else {
+					ed.innerHTML = '... Error! <a href="/" onclick="history.go(-1)" class="btn btn-danger btn-sm">Back</a>'
+				}
+				
 			});
 			$("#scan").append($result);
-			//$result.attr("src", "/case/doscan/${caseobj['case_id']}");
-			/*
-			$.ajax({
-				url: "/case/doscan/${caseobj['case_id']}",
-				cache: true,
-				success: function(html) {
-					window.frames[0].stop();
-					$result.html(html);
-					$result.show('slow');
-				}
-			});
-			*/
 		}
 	</script>
 </body>
