@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from IMainModule import MenuEntry, IMainModule
-import cherrypy, ExtractStore, HtmlExtract, json, re
+import cherrypy, ExtractStore, HtmlExtract, json, re, base64
 from Catalog import Catalog
 from copy import copy
 from Timeline import Timeline, TimelineDate, TimelineItem
@@ -368,29 +368,30 @@ class AppExplorer(IMainModule):
                                    error="Application Not Found")
     
     @cherrypy.expose
-    def strings(self, case_id, *args):
+    def strings(self, case_id, args):
         return self._handle_fileview( case_id, args, 
                                       self.htmlextract.dump_strings)
     
     @cherrypy.expose
-    def hexdump(self, case_id, *args ):
+    def hexdump(self, case_id, args ):
         return self._handle_fileview( case_id, args, self.htmlextract.dump_hex)
     
     @cherrypy.expose
-    def view(self, case_id, *args ):
+    def view(self, case_id, args ):
         return self._handle_fileview(case_id, args, self.htmlextract.dump_file)
     
     @cherrypy.expose
-    def getdata(self, case_id, appname, *args, **kw):
+    def getdata(self, case_id, path, table, **kw ):
         store = self.case.get_store(case_id)
+        path = base64.b64decode(path).split("/")[1:]
+        appname = path[0]
         app = self.find_appbyname(store.store, appname)
         if app == None:
             tmpl = self.lookup.get_template("case.html")
             cherrypy.response.status = 404
             return tmpl.render_unicode(applications=store.store,
                                        error="App Not Found")
-        table = args[len(args)-1]
-        dbfilepath = args[:-1]
+        dbfilepath = path[1:]
         path = dbfilepath[0:len(dbfilepath)-1]
         filename = dbfilepath[len(dbfilepath)-1]
         fobj = self.get_filefrompath( store, app, path, filename)
@@ -412,6 +413,8 @@ class AppExplorer(IMainModule):
         return self._handle_tablereq(tblobj, self._parse_dtreq(kw))
     
     def _handle_fileview(self, case_id, pathtuple, handler):
+        #url is encoded and also has a / at the beginning
+        pathtuple = base64.b64decode(pathtuple).split("/")[1:]
         store = self.case.get_store(case_id)
         appname = pathtuple[0]
         app = self.find_appbyname(store.store, appname)
@@ -421,8 +424,9 @@ class AppExplorer(IMainModule):
         tmpl = self.lookup.get_template("fileview.html")
         if fobj != None:
             filehtml = handler(fobj)
-            return tmpl.render_unicode(case_id, app=app, filehtml=filehtml,
-                                       module=self)
+            return tmpl.render_unicode(case_id, app=app, 
+                                       path='/'+'/'.join(pathtuple[1:]),
+                                       filehtml=filehtml,module=self)
         else:
             return "Error - File not found"
     

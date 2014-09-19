@@ -23,5 +23,5 @@ import os
 
 CASE_SETTINGSFILENAME = "settings.cfg"
 SYSTEM_SETTINGSFILENAME = "nfi.cfg"
-STORE_FOLDER = "store"
-MAINDB_FILEPATH = "main.db"
+STORE_FOLDER = os.path.join("..","nfistore") #"store"
+MAINDB_FILEPATH = os.path.join("..","_localdb")#"main.db"

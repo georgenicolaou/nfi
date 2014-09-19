@@ -86,8 +86,14 @@ class HtmlExtract(object):
         if appfile.ftype == ExtractStore.TYPE_MULTI:
             if appfile.filepath == None:
                 return "<p>Unexpected Error: no filepath specified</p>"
-            f = open(appfile.filepath, "rb")
-            content = f.read()
+            try:
+                f = open(appfile.filepath, "rb")
+                content = f.read()
+            except:
+                return """
+                <p>File {} not found. Please make sure that you haven't
+                unmounted any images regarding this case
+                """.format(cgi.escape(appfile.filepath))
             return self._get_datahtml(content)
         else:
             return self._get_datahtml(appfile.content)
@@ -96,8 +102,14 @@ class HtmlExtract(object):
         if appfile.ftype == ExtractStore.TYPE_MULTI:
             if appfile.filepath == None:
                 return "<p>Unexpected Error: no filepath specified</p>"
-            f = open(appfile.filepath, "rb")
-            content = f.read()
+            try:
+                f = open(appfile.filepath, "rb")
+                content = f.read()
+            except:
+                return """
+                <p>File {} not found. Please make sure that you haven't
+                unmounted any images regarding this case
+                """.format(cgi.escape(appfile.filepath))
             return self._get_stringshtml( self.restringsdump(content))
         else:
             return self._get_stringshtml(self.restringsdump(appfile.content))

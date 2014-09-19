@@ -1,6 +1,7 @@
-<%page args="case_id,app,filehtml,module"/>
+<%page args="case_id,app,path,filehtml,module"/>
 
 <h3>${app.name} (${app.cname})</h3>
+<h5>${path|h}</h5>
 <hr />
 ${filehtml}
 
