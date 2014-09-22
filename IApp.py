@@ -20,6 +20,7 @@ You should have received a copy of the GNU General Public License
 along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import re
+from IDeviceVersion import IDeviceVersion
 
 class DataTypes(object):
     EMPTY = 0
@@ -36,6 +37,20 @@ class IApp(object):
     databases = {}
     known = False
     dummyRE = type(re.compile("nfi"))
+    version = [-1]
+    
+    def get_versions(self):
+        return self.version
+    
+    def has_defaultversion(self):
+        if IDeviceVersion.DEFAULT_VERSION in self.version:
+            return True
+        return False
+    
+    def has_version(self,appversion):
+        if appversion in self.version:
+            return True
+        return False
     
     def get_packagename(self):
         return self.name

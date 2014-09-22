@@ -28,8 +28,8 @@ class com_andrew_apollo(IApp):
     databases = { 
          "albumhistory.db": [ 
                 KnownTable("albumhistory", None, 
-                    {"albumyear":ConvertUtils.JsToUnix,"timeplayed":ConvertUtils.JsToUnix}, 
-                    {"albumyear":DataTypes.DATE, "timeplayed":DataTypes.DATE}),
+                    {"timeplayed":ConvertUtils.JsToUnix}, 
+                    {"timeplayed":DataTypes.DATE}),
                 ]
 		}
                 

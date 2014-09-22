@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from Catalog import Catalog
-
+from IDeviceVersion import IDeviceVersion
 
 
 class Label(object):
@@ -47,6 +47,16 @@ class IMiscSource(object):
     
     def __init__(self):
         return
+    
+    def for_version(self,version):
+        #Empty version means DEFAULT 
+        if len(self.version) == 0:
+            return True
+        if IDeviceVersion.DEFAULT_VERSION in self.version:
+            return True
+        if version in self.version:
+            return True
+        return False
     
     def get_max_depth(self):
         return len(self.relative_directories)

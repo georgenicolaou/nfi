@@ -26,7 +26,7 @@ from Catalog import Catalog
 import re
 
 class UserAccountsOld(IMiscSource):
-    version = [15]
+    version = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     catalog_id = Catalog.CATALOG_DEVINFO
     title = Label( "Accounts", "accounts" )
     relative_directories = [ "system" ]

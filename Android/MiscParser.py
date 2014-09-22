@@ -31,7 +31,7 @@ The MiscParser is responsible for
 """
 class MiscParser(object):
 
-    parser_name = "Catalog Parser (MiscParser)"
+    parser_name = "MiscParser"
     print_queue = None
     store = None
     misc_definitions = None
@@ -42,7 +42,8 @@ class MiscParser(object):
         ParserType.TYPE_SQLITE3: parse_sqlite
     }
     
-    def __init__(self, print_queue=None,store=None, settings=None):
+    def __init__(self, print_queue=None,store=None, settings=None, 
+                 versions=None):
         '''
         Initialize the print_queue and specify a store if one is needed. If not 
         then the class automatically  creates a new instance
@@ -53,14 +54,31 @@ class MiscParser(object):
         else:
             self.store = store
         imp = Importer()
-        self.misc_definitions = imp.get_package_modules( "AndroidMisc", 
+        
+        defns = imp.get_package_modules( "AndroidMisc", IMiscSource() )
+        if versions != None:
+            platform = versions.get_device_version()
+            self.selfprint("Platform Version: {}".format(platform))
+            self.misc_definitions = []
+            for defn in defns:
+                title = defn.title.internal_name
+                if defn.for_version(platform): 
+                    self.selfprint("Adding Module {}".format(title))
+                    self.misc_definitions.append(defn)
+                else:
+                    self.selfprint("No match for {} versions: {}".format(title, 
+                                    ','.join([ str(i) for i in defn.version])))
+        else:
+            self.misc_definitions = imp.get_package_modules( "AndroidMisc", 
                                                               IMiscSource() )
         if self.print_queue != None:
-            self.print_queue.put("[MiscParser]: Initialized Misc Parser")
+            self.selfprint("Initialized Misc Parser")
         self.dummyRE = type(re.compile("A"))
         self.settings = settings
         return
     
+    def selfprint(self,msg):
+        self.print_queue.put("[{}]: {}".format(self.parser_name,msg))
     def get_package_list(self):
         lst = []
         for module in self.misc_definitions:

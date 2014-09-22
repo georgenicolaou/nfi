@@ -31,6 +31,8 @@ from AndroidAuxiliary.ApplicationMiscParser import ApplicationMiscParser
 from AndroidAuxiliary.PermissionsJoiner import PermissionsJoiner
 from ModuleImporter import Importer
 from IAuxiliary import IAuxiliary
+from MountPoints import MountPoints
+from AndroidDeviceVersion import AndroidDeviceVersion
 class AndroidScanner(IScanner):
     
     def begin_scan(self,location):
@@ -45,18 +47,31 @@ class AndroidScanner(IScanner):
     #Missing variables are initialized in IScanner
     def _begin_scan(self, location):
         #----------------------------------------------------------------------
+        #Initiating device version scanning
+        #----------------------------------------------------------------------
+        #XXX should remove this and add it in HttpServe when loading case
+        self.print_queue.put("** Determining Device/Apps versions **")
+        mounts = MountPoints()
+        mounts.set_mountpoint(MountPoints.MOUNT_DATA, location)
+        versions = AndroidDeviceVersion(self.print_queue,mounts)
+        versions.populate_info()
+        versions.print_debug()
+        
+        
+        #----------------------------------------------------------------------
         #Initiating file system scanning and populating of data
         #----------------------------------------------------------------------
         self.print_queue.put("** Running Application Parser **")
         app_parser = ApplicationParser( self.print_queue, self.extract_store, 
-                                        location, settings=self.settings )
+                                        location, settings=self.settings, 
+                                        versions=versions )
         #XXX note that this is hard-coded. If for some reason Android app store
         # location changes, this would need to reflect it
         app_parser.scan_directory( os.path.join( location, "data" ) )
         
         self.print_queue.put("** Running Configuration Parser **")
         misc_parser = MiscParser( self.print_queue, self.extract_store, 
-                                  settings=self.settings )
+                                  settings=self.settings, versions=versions )
         misc_parser.scan_directory(location)
         #----------------------------------------------------------------------
         # Initiating auxiliary modules

@@ -34,16 +34,19 @@ class ApplicationParser(object):
     appstore = {}
     exstore = None        
     def __init__(self, outqueue=None, extract_store=None, mountpoint=None, 
-                 settings=None):
+                 settings=None, versions=None ):
         self.mimguess = MimeGuesser()
-        self.mountpoint = mountpoint
         self.outqueue = outqueue
-        self.root = "/"
         self.settings = settings
+        self.versions = versions
         imp = Importer()
         app_modules = imp.get_package_modules("AndroidApps", IApp())
         for app in app_modules:
-            self.appstore[app.get_packagename()] = app
+            name = app.get_packagename()
+            if name in self.appstore:
+                self.appstore[name].append(app)
+            else:
+                self.appstore[name] = [app]
         if extract_store != None:
             self.exstore = extract_store
         else:
@@ -56,10 +59,34 @@ class ApplicationParser(object):
         return self.appstore.keys()
     
     def get_package(self, name):
-        try:
-            return self.appstore[name]
-        except:
+        if name not in self.appstore:
             return None
+        if len(self.appstore[name]) == 1:
+            if self.appstore[name][0].has_defaultversion() == False:
+                self.outqueue("Package {} is not default".format(name))
+            return self.appstore[name][0]
+        
+        """
+        If multiple entries for the same package exist, then we need to decide
+        which one we should use
+        """
+        default = None
+        appversion = self.versions.get_application_version(name)
+        if appversion == None or appversion == "N/A":
+            self.outqueue("{} could not determine App version".format(name))
+        else:
+            try:
+                appversion = int(appversion)
+            except:
+                pass
+        for defn in self.appstore[name]:
+            if defn.has_defaultversion:
+                if default != None: 
+                    self.outqueue("{} has more than one default".format(name))
+                default = defn
+            if defn.has_version(appversion):
+                return defn
+        return default
     
     def handle_file(self, filename, dirpath, app):
         filepath = join(dirpath,filename)

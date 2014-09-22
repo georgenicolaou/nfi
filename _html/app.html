@@ -94,7 +94,7 @@ TYPE_IMAGE = 7
 
 <%def name="print_dir_tree(appdir,root,app)">
 	<% 
-		import os,HttpEscapes
+		import os
 		dirpath = root+'/'+os.path.basename(appdir.name) 
 	%>
 		<li class="ftree">
