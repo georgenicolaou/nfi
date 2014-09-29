@@ -25,7 +25,7 @@ along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 Android SQLite Functions
 """
 def func_phonenumb_equal(phone1,phone2,strict=False):
-    print "func_phonenumb_equal( {}, {}, {})".format(phone1,phone2,strict)
+    #print "func_phonenumb_equal( {}, {}, {})".format(phone1,phone2,strict)
     if phone1 == None or phone2 == None: return None
     #XXX should probably split the number appart and do the check
     if strict:
@@ -43,13 +43,13 @@ def func_phonenumb_equal_3(phone1,phone2,strict):
     return func_phonenumb_equal(phone1,phone2,strict)
 
 def func_phone_stripped_reversed(phone):
-    print "func_phone_stripped_reversed( {} )".format(phone)
+    #print "func_phone_stripped_reversed( {} )".format(phone)
     return phone
 
 def func_tokenize( token_table, data_row_id, data, delimiter, token_index=0, 
                    data_tag=None ):
-    print "func_tokenize( {}, {}, {}, {}, {}, {} )".format(token_table,
-                                data_row_id,data,delimiter,token_index,data_tag)
+    #print "func_tokenize( {}, {}, {}, {}, {}, {} )".format(token_table,
+    #                            data_row_id,data,delimiter,token_index,data_tag)
     return None
 
 def func_tokenize_4( token_table, data_row_id, data, delimiter ):
@@ -65,7 +65,7 @@ def func_tokenize_6( token_table, data_row_id, data, delimiter, token_index,
                           token_index, data_tag )
 
 def func_dummy_one(arg):
-    print "func_dummy_one( {} )".format(arg)
+    #print "func_dummy_one( {} )".format(arg)
     return 1
 
 
@@ -73,7 +73,7 @@ def func_dummy_one(arg):
 Collator functions
 """
 def android_collate8(str1, str2):
-    print "android_collate8( {}, {} )".format(str1,str2)
+    #print "android_collate8( {}, {} )".format(str1,str2)
     return cmp(str1,str2)
 
 functions = {

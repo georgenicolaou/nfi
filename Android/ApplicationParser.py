@@ -63,7 +63,7 @@ class ApplicationParser(object):
             return None
         if len(self.appstore[name]) == 1:
             if self.appstore[name][0].has_defaultversion() == False:
-                self.outqueue("Package {} is not default".format(name))
+                self.outqueue.put("Package {} is not default".format(name))
             return self.appstore[name][0]
         
         """
@@ -73,7 +73,7 @@ class ApplicationParser(object):
         default = None
         appversion = self.versions.get_application_version(name)
         if appversion == None or appversion == "N/A":
-            self.outqueue("{} could not determine App version".format(name))
+            self.outqueue.put("{} could not determine App version".format(name))
         else:
             try:
                 appversion = int(appversion)
@@ -82,7 +82,7 @@ class ApplicationParser(object):
         for defn in self.appstore[name]:
             if defn.has_defaultversion:
                 if default != None: 
-                    self.outqueue("{} has more than one default".format(name))
+                    self.outqueue.put("{} has more than one default".format(name))
                 default = defn
             if defn.has_version(appversion):
                 return defn

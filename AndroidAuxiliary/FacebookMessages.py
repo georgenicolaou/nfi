@@ -184,11 +184,12 @@ class FacebookMessages(IAuxiliary):
                 Label("Facebook Messenger Chats", "facebook_messenger_chats"), 
                 threadsdb)
         
+        
         threadsdb = store.query_appstore(
                                 "com.facebook.katana/databases/threads_db2")
         if threadsdb != None:
             ok = self._gensubsection(catalog, section_label, 
-                Label("Facebook App Chats", "facebook_messenger_chats"), 
+                Label("Facebook App Chats", "facebook_app_chats"), 
                 threadsdb)
 
         return ok

@@ -13,6 +13,9 @@ function hashnav() {
 	$("#content").load( url, function( response, status, xhr ){
 		if( status == "error" ) {
 			loading.html("Error: " + xhr.status + " " + xhr.statusText);
+			if( xhr.status == 415 ) {
+				window.location.reload();
+			}
 			return;
 		}
 		datefieldsupdate();

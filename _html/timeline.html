@@ -187,6 +187,24 @@
 	}
 	
 }
+.timeline-break {
+	padding: 20px;
+	background: solid red;
+}
+.timeline-year {
+	font-size: 2em;
+}
+/*
+-------------------------------------------------------------------------------
+Plugin Styles (placed here for now, but we could have each plugin declare it)
+-------------------------------------------------------------------------------
+*/
+.textbox {
+	border: 1px solid #ddd;
+	font-style: italic;
+	padding: 2px;	
+}
+
 </style>
 <div class="timeline-container">
 	% if title != None: 
@@ -217,13 +235,31 @@
         <span class="timeline-balloon-date-month">APR</span>
     </div>
  -->
+ 		<%
+ 		last_year = 0
+ 		%>
 		% for content in contents:
+		% if last_year != content.year:
+		<% last_year = content.year %>
+		<div class="row timeline-movement">
+			<div class="timeline-break">
+				<span class="timeline-year">${content.year}</span>
+			</div>
+		</div>
+		% endif
 		<div class="row timeline-movement">
 			<div class="timeline-badge">
 				<span class="timeline-balloon-date-day">${content.day}</span>
 				<span class="timeline-balloon-date-month">${content.month.upper()}</span>
 			</div>
 				% for i,item in enumerate(content.items):
+				<%
+				if i % 2 == 0: left_side = True
+				else: left_side = False 
+				%>
+				% if left_side == False: 
+				<div class="row">
+				% endif
 				<div class="col-sm-6 timeline-item">
 					<div class="row">
 						% if i % 2 == 0:
@@ -231,10 +267,13 @@
 							<div class="timeline-panel left">
 								<ul class="timeline-panel-ul">
 									% if len(item.title) != 0:
-									<li><span class="${item.itemclass}">${item.title} <i class="fa ${item.icon}"></i></span></li>
+									<li><span class="${item.itemclass}"><b>${item.title}</b> <i class="fa fa-lg ${item.icon}"></i></span></li>
 									% endif
 									% for info in item.info:
 									<li><span class="causale">${info}</span></li>
+									% endfor
+									% for plugin in item.plugins:
+									<li>${plugin}</li>
 									% endfor
 									<li><p><small class="text-muted"><span class="date">${item.date}</span> <i class="glyphicon glyphicon-time"></i></small>
 								</ul>
@@ -244,9 +283,12 @@
 						<div class="col-sm-offset-1 col-sm-11">
 							<div class="timeline-panel right">
 								<ul class="timeline-panel-ul">
-									<li><span class="${item.itemclass}"><i class="fa ${item.icon}"></i> ${item.title}</span></li>
+									<li><span class="${item.itemclass}"><i class="fa fa-lg ${item.icon}"></i> <b>${item.title}</b></span></li>
 									% for info in item.info:
 									<li><span class="causale">${info}</span></li>
+									% endfor
+									% for plugin in item.plugins:
+									<li>${plugin}</li>
 									% endfor
 									<li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <span class="date">${item.date}</span></small>
 								</ul>
@@ -255,6 +297,9 @@
 						% endif
 					</div>
 				</div>
+				% if left_side == False:
+				</div>
+				% endif
 				% endfor
 		</div>
 		% endfor

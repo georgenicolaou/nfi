@@ -21,6 +21,7 @@ along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import os, string
 import Includes
+from Timeline import Timeline
 
 TYPE_NONE = 0
 TYPE_EMPTY = 1
@@ -309,6 +310,9 @@ class MiscSubSection(object):
     def add_items(self, items):
         self.subsection_items += items
     
+    def get_items(self):
+        return self.subsection_items
+    
     def find_item_by_name(self, item_name):
         for item in self.subsection_items:
             if item.item_name == item_name:
@@ -381,6 +385,7 @@ class ExtractStore(object):
     
     store = []
     misc_catalogs = {}
+    timeline = None
     def __init__(self):
         self.store = []
         self.misc_catalogs = {}
@@ -397,6 +402,10 @@ class ExtractStore(object):
         self.store.append(app)
         return app
     
+    def create_timeline(self):
+        self.timeline = Timeline()
+        return self.timeline
+        
     def get_misccatalog(self, catalog):
         if catalog in self.misc_catalogs:
             return self.misc_catalogs[catalog]
@@ -527,7 +536,8 @@ class ExtractStore(object):
             cnt += 1  
         with open(filepath_ext,"wb") as storefile:
             #marshal.dump( self.store, storefile)
-            cPickle.dump((self.store, self.misc_catalogs), storefile, cPickle.HIGHEST_PROTOCOL)
+            cPickle.dump((self.store, self.misc_catalogs, self.timeline), 
+                         storefile, cPickle.HIGHEST_PROTOCOL)
         return filepath_ext
             
     def load_store(self, filename):
@@ -535,5 +545,6 @@ class ExtractStore(object):
         with open(filename,"rb") as storefile:
             storefile.seek(0)
             #self.store = marshal.load(storefile)
-            (self.store, self.misc_catalogs) = cPickle.load(storefile)
+            (self.store, self.misc_catalogs, self.timeline) = cPickle.load(
+                                                                    storefile)
             

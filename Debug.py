@@ -31,7 +31,9 @@ class Debug(object):
         self.case = case
         return
     
-    
+    def selfprint(self,msg,lvl=0):
+        print ("\t" * lvl) + "[Debug]: " + msg
+        
     def _get_item_html(self,item):
         html = u""
         if item.item_type == ExtractStore.TYPE_MULTI:
@@ -61,10 +63,12 @@ class Debug(object):
     
     def printCatalog(self,store):
         html = u""
+        self.selfprint("Getting catalog")
         catalogs = store.misc_catalogs
         for catid,catalog in catalogs.iteritems():
             if catid not in Catalog.Catalog.catalogs_info: continue
             cat_info = Catalog.Catalog.catalogs_info[catid]
+            self.selfprint("Rendering Catalog: {}".format(cat_info["name"]),1)
             html += u"""
             <div class="panel panel-default">
             <div class="panel-heading">
@@ -74,7 +78,9 @@ class Debug(object):
             """.format( cat_info["name"] )
             for sec_name, section in catalog.sections.iteritems():
                 html += "<h4>{} ({})</h4><ul>".format(sec_name,section.section_label)
+                self.selfprint("Rendering section: " + section.section_label,2)
                 for subsection in section.subsections:
+                    self.selfprint("Rendering subsection: " + subsection.subsection_label,3)
                     html += """<li>
                         <h5>{} ({}) Items: </h5><a href="#" class="itemslist"><i class="fa fa-plus"></i></a>""".format( 
                         subsection.subsection_name, subsection.subsection_label)
@@ -142,9 +148,11 @@ class Debug(object):
     
     def printApps(self,store):
         html = u""
+        self.selfprint("Rendering apps")
         ': :type case: HttpServe.Case'
         for app in store.store:
             ': :type app: MiscStore.Application'
+            self.selfprint("Rendering app: " + app.name, 1)
             html += u"""
             <div class="panel panel-default">
                 <div class="panel-heading">

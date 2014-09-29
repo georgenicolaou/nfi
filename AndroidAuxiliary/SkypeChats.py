@@ -101,7 +101,7 @@ class SkypeChats(IAuxiliary):
                     ExtractStore.MiscItem(
                         ExtractStore.TYPE_STRING, "Account", 
                         accnt_name, 
-                        item_name="date" 
+                        item_name="account" 
                     ),
                     ExtractStore.MiscItem(
                         ExtractStore.TYPE_DATE, "Date", 

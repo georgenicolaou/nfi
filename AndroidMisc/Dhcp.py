@@ -35,15 +35,19 @@ class Dhcp(IMiscSource):
                     KnownField( FieldType.TYPE_CONTAINER, "(.*)\n", "leases",
                         contents=[
                             KnownField( FieldType.TYPE_DATE, "^(\d+)", 
-                                        "Date" ),
+                                        "expiry_date" 
+                                        "Expiry Date" ),
                             KnownField( FieldType.TYPE_STR, "^\d+ ([\w:]+)", 
-                                        "AP MAC Address" ),
-                            KnownField( FieldType.TYPE_STR, "^\d+ [\w:]+ ([\d\.]+)", 
+                                        "ap_mac",
+                                        "Client MAC Address" ),
+                            KnownField( FieldType.TYPE_STR, 
+                                        "^\d+ [\w:]+ ([\d\.]+)",
+                                        "leased_ip" ,
                                         "Leased IP Address" ),
-                            KnownField( FieldType.TYPE_STR, "^\d+ [\w:]+ [\d\.]+ (.*?) ", 
+                            KnownField( FieldType.TYPE_STR, 
+                                        "^\d+ [\w:]+ [\d\.]+ (.*?) ",
+                                        "hostname", 
                                         "Hostname" ),
-                            KnownField( FieldType.TYPE_STR, "([\w:]+)$", 
-                                        "Client MAC Address" )
                         ]
                     )
                 ]

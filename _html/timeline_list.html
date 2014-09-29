@@ -1,0 +1,63 @@
+<%page args="contents"/>
+% if len(contents) == 0:
+<div class="timeline-list col-lg-12">
+	<p>No items found</p>
+</div>
+% else:
+<div class="timeline-list col-lg-12 col-sm-12">
+   	<% last_year = -1 %>
+	% for content in contents:
+		% if last_year != content.year:
+			% if last_year != -1:
+				</div>
+			% endif
+			<% last_year = content.year %>
+			<div class="timeline-movement-year">
+				<div class="timeline-yearbadge">
+					<span class="timeline-year">${content.year}</span>
+				</div>
+		% endif
+		<div class="timeline-movement">
+			<div class="timeline-badge">
+				<span class="timeline-date-day">${content.day}</span>
+				<span class="timeline-date-month">${content.month}</span>
+			</div>
+			% for item in content.items:
+			<div class="timeline-item">
+				<div class="timeline-inner">
+					<div class="timeline-head clearfix">
+						% if len(item.title) != 0:
+						<div class="avatar pull-left">
+							<i class="fa fa-lg ${item.icon}"></i>
+						</div>
+						<div class="user-detail">
+							<h5 class="handle">${item.title}</h5>
+							<div class="post-meta">
+								<div class="asker-meta">
+									<span class="timeline-when">
+										<i class="fa fa-clock-o"></i>
+										<span class="timeline-when-data"><span class="date">${item.date}</span></span>
+									</span>
+								</div>
+							</div>
+						</div>
+						% endif
+					</div>
+					% for info in item.info:
+					<div class="timeline-content">
+						${info}
+					</div>
+					% endfor
+					% for plugin in item.plugins:
+					<div class="timeline-content">
+						${plugin}
+					</div>
+					% endfor
+				</div>
+			</div>
+			% endfor
+		</div>
+	% endfor
+	</div>		
+</div>
+% endif

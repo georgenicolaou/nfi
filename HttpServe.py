@@ -34,6 +34,7 @@ import cPickle
 from Catalog import Catalog
 from Dashboard import Dashboard
 from AppExplorer import AppExplorer
+from TimelinePlugin import TimelinePlugin
 from Android.AndroidScanner import AndroidScanner
 from multiprocessing import Queue
 from threading import Thread
@@ -286,7 +287,7 @@ class Root(object):
 class HttpServe(object):
     def __init__(self,extractstore=None,port="8080"):
         self.extractstore = extractstore
-        self.modules = [ Catalog, AppExplorer ]
+        self.modules = [ Catalog, AppExplorer, TimelinePlugin ]
         self.port = int(port)
         self.settings = SystemSettings.SystemSettings()
         return

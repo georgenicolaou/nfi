@@ -25,13 +25,13 @@ import ConvertUtils
 class com_andrew_apollo(IApp):
     name = "com.andrew.apollo"
     cname = "Andrew Apollo"
-    databases = { 
-         "albumhistory.db": [ 
-                KnownTable("albumhistory", None, 
-                    {"timeplayed":ConvertUtils.JsToUnix}, 
-                    {"timeplayed":DataTypes.DATE}),
-                ]
-		}
+    databases = {
+        "albumhistory.db": [
+            KnownTable("albumhistory", None,
+                {"timeplayed":ConvertUtils.JsToUnix},
+                {"timeplayed":DataTypes.DATE}),
+        ]
+	}
                 
 
     def __init__(self):

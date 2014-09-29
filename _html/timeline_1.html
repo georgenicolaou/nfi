@@ -1,0 +1,288 @@
+<%page args="title,module,case_id"/>
+
+<style>
+
+.timeline-movement {
+    position: relative;
+}
+.timeline-item {
+    margin-bottom: 25px;
+    margin-left: 56px;
+    position: relative;
+}
+.timeline-item .timeline-inner {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 10px;
+    position: relative;
+}
+.timeline-item .timeline-inner:before {
+    border-right: 10px solid #ddd;
+    border-style: solid;
+    border-width: 10px;
+    color: rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    height: 0;
+    left: -20px;
+    position: absolute;
+    top: 6px;
+    width: 0;
+}
+.timeline-item .timeline-inner:after {
+    border-right: 10px solid #fff;
+    border-style: solid;
+    border-width: 10px;
+    color: rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    height: 0;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 0;
+}
+.message-item:before {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    bottom: -30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 3px;
+}
+.message-item:after {
+    background: none repeat scroll 0 0 #fff;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    content: "";
+    height: 15px;
+    left: -36px;
+    position: absolute;
+    top: 10px;
+    width: 15px;
+}
+.timeline-item:before {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    bottom: -30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 3px;
+}
+.timeline-item:after {
+    background: none repeat scroll 0 0 #fff;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    content: "";
+    height: 15px;
+    left: -36px;
+    position: absolute;
+    top: 10px;
+    width: 15px;
+}
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+.timeline-item .timeline-head {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+.timeline-item .timeline-head .avatar {
+    margin-right: 20px;
+}
+.timeline-item .timeline-head .user-detail {
+    overflow: hidden;
+}
+.timeline-item .timeline-head .user-detail h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+.timeline-item .timeline-head .post-meta {
+    float: left;
+    padding: 0 15px 0 0;
+}
+.timeline-item .timeline-head .post-meta > div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+.post-meta > div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+.timeline-item .timeline-head .post-meta > div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+.post-meta > div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+img {
+    max-height: 40px;
+    min-height: 40px;
+}
+.timeline-break {
+    padding: 20px;
+}
+.timeline-year {
+    font-size: 2em;
+}
+.textbox {
+    border: 1px solid #ddd;
+    font-style: italic;
+    padding: 2px;
+}
+.timeline-badge {
+    background-color: #428bca;
+    border: 3px solid #3a79b0;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 1.2em;
+    height: 55px;
+    margin-bottom: 25px;
+    margin-top: 34px;
+    text-align: center;
+    top: 20px;
+    width: 55px;
+    z-index: 1000;
+}
+.timeline-badge:after {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    bottom: -18px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 27px;
+    left: 26px;
+    position: absolute;
+    top: 59px;
+    width: 3px;
+    z-index: 2;
+}
+.timeline-yearbadge {
+    background: none repeat scroll 0 0 #eee;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.timeline-yearbadge .timeline-badge:first-child {
+	margin-top: 0px;
+}
+/*
+.timeline-yearbadge:before {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    bottom: -30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 130%;
+    left: -30px;
+    position: absolute;
+    width: 3px;
+}
+*/
+.timeline-movement-year {
+    margin-top: 30px;
+}
+.timeline-movement-year:first-child {
+	margin-top: 0px;
+}
+.timeline-movement:nth-of-type(2) .timeline-badge {
+    margin-top: 0;
+}
+.timeline-date-day {
+    font-size: 1.4em;
+}
+.timeline-date-month {
+    font-size: 0.7em;
+    position: relative;
+    top: -10px;
+}
+.avatar .fa {
+    color: #428bca;
+}
+.timeline-content {
+	word-wrap: break-word;
+}
+</style>
+
+<div class="timeline-container">
+	% if title != None: 
+    <div class="page-header">
+		<h1>${title|h}</h1>
+	</div>
+	% endif
+	<div class="col-lg-12 col-sm-12" style="margin-bottom:5px;">
+		<button id="daterange" class="btn btn-default">
+			<i class="fa fa-calendar fa-lg"></i>
+			<span id="selected_range">Last Month</span> <b class="caret"></b>
+		</button>
+		<script>
+		var timeline_url = "/${module.internal_name}/get/${case_id}";
+		var end = moment();
+		var start = moment().startOf('month');
+		var $container = $("#timeline-container");
+		var $selected = $("#selected_range");
+		var loading = $('<div class="loading">').html(
+			$('<span>').append(
+				$('<i class="fa fa-spinner spin">'),
+				" Loading..."
+			)
+		);
+		
+		function load_timeline(start,end) {
+			$container.html(loading);
+			if( timezone == "local" || !window['moment'] ) {
+    			$selected.html(start.format("DD-MMM-YYYY") + " - " + 
+    					end.format("DD-MMM-YYYY"));
+    		}
+    		else {
+    			$selected.html( start.tz(timezone)..format("DD-MMM-YYYY") + 
+    					" - " + end.tz(timezone).format("DD-MMM-YYYY") );
+    		}
+			start = start.unix();
+			end = end.unix();
+			$container.load(timeline_url,{start:start,end:end},function(){
+				datefieldsupdate();
+			});
+		}
+		$("#daterange").daterangepicker(
+			{
+		      ranges: {
+		         'Today': [moment(), moment()],
+		         'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+		         'Last 7 Days': [moment().subtract('days', 6), moment()],
+		         'Last 30 Days': [moment().subtract('days', 29), moment()],
+		         'This Month': [moment().startOf('month'), moment().endOf('month')],
+		         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
+				 'This Year': [moment().startOf('year'), moment()]
+		      },
+		      format: 'DD-MM-YYYY',
+		      startDate: start,
+		      endDate: end
+		    },
+		    load_timeline
+		);
+		load_timeline(start,end);
+		</script>
+	</div>
+	<div id="timeline-container">
+	</div>
+</div>

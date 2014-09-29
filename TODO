@@ -20,6 +20,7 @@ Features
 	users from verifying the file unless all users can "see" the public keys of
 	other users. However, if a single user is compromised then the entire model
 	collapses...
+- Timeline, filters, easy date views, range selectors, etc
 - Provide some form of APK analysis
 ~ Alternatively specified folders that go through "Application Parser module"
 	maybe convert the module into something more generic
@@ -27,7 +28,11 @@ Features
 - Display an indicator for loaded cases which also triggers a modal (or smth)
 	which lists all memory loaded cases with an option to unload them.
 - Pre-scan modules (like IDeviceVersion, could also be used for dev extraction)
-
+- Post processing plugin for cracking hashes using androidlockcracker and 
+	hashcat
+- Convert auxiliary modules and timeline definitions into SQL statements at
+	point in the development cycle of this software....... a very far point...
+	(might need to write a different software for this i guess...)
 Files to parse:
 ---------------
 - Files under /data/system/dropbox/*
@@ -40,6 +45,8 @@ Known Issues:
 	it fails because %40 becomes @ but the store has it as %40
 	
 	Also make sure to add %20 when file has space in it
+- Long catalogs hog the system, should consider using datatables and request
+	catalog pages.
 
 Optimization:
 -------------

@@ -80,7 +80,7 @@ class AndroidScanner(IScanner):
         
         auxmods = Importer().get_package_modules( "AndroidAuxiliary", 
                         IAuxiliary(), ( self.extract_store, self.print_queue ) )
-        
+        auxmods.sort(key=lambda d: d.index)
         for mod in auxmods:
             mod.begin()
         #Finished, sending FIN signal

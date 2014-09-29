@@ -22,6 +22,7 @@ along with NFI.  If not, see <http://www.gnu.org/licenses/>.
 class IAuxiliary(object):
     extract_store = None
     pq = None
+    index = 0
     def __init__(self):
         return
     
