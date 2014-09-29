@@ -250,12 +250,12 @@ img {
 		function load_timeline(start,end) {
 			$container.html(loading);
 			if( timezone == "local" || !window['moment'] ) {
-    			$selected.html(start.format("DD-MMM-YYYY") + " - " + 
+    			$selected.html(start.format("DD-MMM-YYYY") + " to " + 
     					end.format("DD-MMM-YYYY"));
     		}
     		else {
-    			$selected.html( start.tz(timezone)..format("DD-MMM-YYYY") + 
-    					" - " + end.tz(timezone).format("DD-MMM-YYYY") );
+    			$selected.html( start.tz(timezone).format("DD-MMM-YYYY") + 
+    					" to " + end.tz(timezone).format("DD-MMM-YYYY") );
     		}
 			start = start.unix();
 			end = end.unix();
