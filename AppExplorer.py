@@ -314,15 +314,14 @@ class AppExplorer(IMainModule):
                                                app.name )
             }
             
-            #http://ishtus-laptop:8080/case/index/40#/appexplorer/view/com.android.providers.contacts/databases/contacts2.db
             if app.name in hints:
                 hintslist = []
                 for hint in hints[app.name]:
                     hinturl = hint.split("::")[0]
                     hintslist.append({
                         'hint' : hint,
-                        'url': "/{}/view/{}/{}{}".format( self.internal_name, 
-                                                    case_id, app.name, hinturl )
+                        'url': "/{}/view/{}/{}".format(self.internal_name, 
+                                case_id, base64.b64encode("/"+app.name+hinturl))
                     })
                 res['hints'] = hintslist
             result.append(res)
