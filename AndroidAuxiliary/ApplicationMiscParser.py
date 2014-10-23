@@ -85,6 +85,12 @@ class ApplicationMiscParser(IAuxiliary):
         self.selfprint("Scanning packages")
         subs = self.extract_store.query_catalog( Packages.Packages.catalog_id, 
                                                  "packages.installed_apps")
+        if subs == None:
+            self.selfprint("[Error]: Crucial packages catalog could not be " +
+                           "populated, please open an issue on github along " +
+                           "with information about the device you are scanning")
+            return False
+        
         if len(subs.subsection_items) == 0:
             self.selfprint("[WANRING] Empty packages list")
             return False
@@ -107,18 +113,19 @@ class ApplicationMiscParser(IAuxiliary):
                         #perm = perm_item.item_contents[0].item_value
                         appinfo.permissions.append(perm)
             #Time to modify application
-            for intent,lrt_list in usage_stats.iteritems():
-                if intent.startswith(appinfo.name):
-                    for lrt in lrt_list:
-                        if lrt in appinfo.exec_history:
-                            appinfo.exec_history[lrt].append(intent)
-                        else:
-                            appinfo.exec_history[lrt] = [intent]
+            if usage_stats != None:
+                for intent,lrt_list in usage_stats.iteritems():
+                    if intent.startswith(appinfo.name):
+                        for lrt in lrt_list:
+                            if lrt in appinfo.exec_history:
+                                appinfo.exec_history[lrt].append(intent)
+                            else:
+                                appinfo.exec_history[lrt] = [intent]
             
             if len(appinfo.exec_history) != 0:
                 appinfo.last_run = sorted(appinfo.exec_history.keys())[-1]
             
-            self.set_application_usagestats(appinfo, usage_stats)
+            #self.set_application_usagestats(appinfo, usage_stats)
             ret = self._update_app_info(appinfo)
             if ret == False:
                 self.selfprint( "Could not find APP {}".format(appinfo.name) )
