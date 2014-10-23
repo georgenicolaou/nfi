@@ -85,6 +85,12 @@ class ApplicationMiscParser(IAuxiliary):
         self.selfprint("Scanning packages")
         subs = self.extract_store.query_catalog( Packages.Packages.catalog_id, 
                                                  "packages.installed_apps")
+        if subs == None:
+            self.selfprint("[Error]: Crucial packages catalog could not be " +
+                           "populated, please open an issue on github along " +
+                           "with information about the device you are scanning")
+            return False
+        
         if len(subs.subsection_items) == 0:
             self.selfprint("[WANRING] Empty packages list")
             return False
