@@ -121,9 +121,9 @@ class ApplicationParser(object):
                 """Skip for now"""
                 continue
             elif isfile(filepath):
-                store_app.totalfiles += 1
                 try:
                     dirobject.add_file(self.handle_file(f, dirroot, app))
+                    store_app.totalfiles += 1
                 except:
                     print("Error handling file %(fname)s" % {'fname': join(dirroot,f)})
         return
