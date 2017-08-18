@@ -75,7 +75,13 @@ def handler_sqlite(filename, filepath, info, out=None, settings=None ):
         FROM sqlite_master
         WHERE sql NOT NULL AND type == 'table' OR type == 'view'
     """
-    cur.execute(schemaq)
+
+    try:
+        cur.execute(schemaq)
+    except sqlite3.DatabaseError:
+        print("Database Error when reading %(realpath)s (%(tmppath)s)" %
+              {'realpath': filepath, 'tmppath': tmp_filepath})
+        return fobj
     schema = cur.fetchall()
     knowntable = None
     for tblrow in schema:
