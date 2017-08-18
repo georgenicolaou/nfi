@@ -122,7 +122,10 @@ class ApplicationParser(object):
                 continue
             elif isfile(filepath):
                 store_app.totalfiles += 1
-                dirobject.add_file(self.handle_file(f, dirroot, app))
+                try:
+                    dirobject.add_file(self.handle_file(f, dirroot, app))
+                except:
+                    print("Error handling file %(fname)s" % {'fname': join(dirroot,f)})
         return
     
     
